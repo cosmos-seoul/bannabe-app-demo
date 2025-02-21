@@ -82,12 +82,13 @@ class MapViewModel with ChangeNotifier {
       'assets/images/honey.png',
     );
 
-    _markers.clear();
+    await _mapController!.clearOverlays();
+
     final stations = _searchQuery.isEmpty ? _stations : _filteredStations;
 
     for (final station in stations) {
       final marker = NMarker(
-        id: station.id.toString(),
+        id: 'station_${station.id}',
         position: NLatLng(
           station.latitude,
           station.longitude,
@@ -97,17 +98,21 @@ class MapViewModel with ChangeNotifier {
         anchor: const NPoint(0.5, 0.5),
       );
 
-      marker.setOnTapListener((marker) {
-        selectStation(
-          stations.firstWhere((s) => s.id == marker.info.id),
-        );
+      await _mapController!.addOverlay(marker);
+
+      marker.setOnTapListener((overlay) {
+        try {
+          final stationId = int.parse(overlay.info.id.split('_')[1]);
+          final selectedStation = _stations.firstWhere(
+            (s) => s.id == stationId,
+            orElse: () => throw Exception('Station not found'),
+          );
+          selectStation(selectedStation);
+        } catch (e) {
+          print('Error selecting station: $e');
+        }
       });
-
-      _markers.add(marker);
     }
-
-    await _mapController?.clearOverlays();
-    await _mapController?.addOverlayAll(_markers.toSet());
   }
 
   Future<void> init() async {
