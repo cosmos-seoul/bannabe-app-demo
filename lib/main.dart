@@ -7,10 +7,6 @@ import 'core/constants/app_colors.dart';
 import 'core/services/auth_service.dart';
 import 'data/models/rental.dart';
 import 'data/models/accessory.dart';
-import 'features/auth/views/login_view.dart';
-import 'features/auth/views/signup_complete_view.dart';
-import 'features/auth/views/signup_view.dart';
-import 'features/auth/views/terms_view.dart';
 import 'features/home/views/home_view.dart';
 import 'features/map/views/map_view.dart';
 import 'features/mypage/views/edit_profile_view.dart';
@@ -105,10 +101,6 @@ class MyApp extends StatelessWidget {
             ),
         Routes.mypage: (context) => const MyPageView(),
         Routes.editProfile: (context) => const EditProfileView(),
-        Routes.login: (context) => const LoginView(),
-        Routes.terms: (context) => const TermsView(),
-        Routes.signup: (context) => const SignupView(),
-        Routes.signupComplete: (context) => const SignupCompleteView(),
         Routes.noticeList: (context) => const NoticeListView(),
       },
     );
