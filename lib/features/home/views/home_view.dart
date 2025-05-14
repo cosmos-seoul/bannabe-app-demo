@@ -61,7 +61,7 @@ class _HomeViewState extends State<HomeView> {
           Expanded(
             child: Scaffold(
               appBar: AppBar(
-                title: const Text('Bannabee'),
+                title: const Text('Billit'),
                 centerTitle: true,
                 automaticallyImplyLeading: false,
               ),
