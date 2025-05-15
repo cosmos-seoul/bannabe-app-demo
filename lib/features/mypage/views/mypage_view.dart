@@ -327,9 +327,9 @@ class MyPageView extends StatelessWidget {
               Icon(
                 icon,
                 color: Colors.grey[700],
-                size: 24,
+                size: 20,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
               Text(
                 label,
                 style: TextStyle(
