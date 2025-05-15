@@ -127,7 +127,7 @@ class AuthService with ChangeNotifier {
     _currentUser = User(
       id: 'test-user-id',
       email: email,
-      name: '반나비',
+      name: '김빌릿',
       phoneNumber: '010-1234-5678',
       profileImageUrl: 'assets/images/profile.jpg',
       createdAt: DateTime.now(),
