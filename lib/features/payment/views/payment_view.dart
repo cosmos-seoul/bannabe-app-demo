@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../../core/constants/app_theme.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/services/storage_service.dart';
 import '../../../data/models/rental.dart';
-import '../../../app/routes.dart';
+import 'payment_complete_view.dart';
 
 class PaymentView extends StatefulWidget {
   final Rental rental;
@@ -24,6 +23,7 @@ class _PaymentViewState extends State<PaymentView> {
   int? hours;
   int? totalPrice;
   bool agreedToTerms = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -49,174 +49,7 @@ class _PaymentViewState extends State<PaymentView> {
     }
   }
 
-  Future<void> _launchKakaoPayLink() async {
-    final url = Uri.parse('https://link.kakaopay.com/_/9DvW7m_');
-
-    try {
-      if (await canLaunchUrl(url)) {
-        final launched = await launchUrl(
-          url,
-          mode: LaunchMode.externalApplication,
-        );
-
-        if (!launched) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('결제 링크를 열 수 없습니다.'),
-                backgroundColor: AppColors.error,
-              ),
-            );
-          }
-          return;
-        }
-
-        // 결제 완료 여부를 확인하기 위해 결제 상태를 주기적으로 체크
-        if (mounted) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) => Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      'assets/images/bannabee.png',
-                      width: 60,
-                      height: 60,
-                    ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      '결제 진행 중',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            '${widget.rental.totalPrice}원',
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            '${widget.rental.accessoryName} (${widget.rental.totalRentalTime.inHours}시간)',
-                            style: const TextStyle(
-                              color: Colors.black54,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      '카카오페이 결제를 완료해주세요',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      '결제가 완료되면 아래 버튼을 눌러주세요',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              side: const BorderSide(color: AppColors.primary),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Text('취소'),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pushReplacementNamed(
-                                Routes.paymentComplete,
-                                arguments: widget.rental,
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              backgroundColor: AppColors.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Text(
-                              '결제 완료',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('결제 링크를 열 수 없습니다.'),
-              backgroundColor: AppColors.error,
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('결제 링크를 여는 중 오류가 발생했습니다: $e'),
-            backgroundColor: AppColors.error,
-          ),
-        );
-      }
-    }
-  }
-
-  void _handlePaymentButtonTap() {
+  Future<void> _handlePaymentButtonTap() async {
     if (!agreedToTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -227,7 +60,22 @@ class _PaymentViewState extends State<PaymentView> {
       return;
     }
 
-    _launchKakaoPayLink();
+    setState(() {
+      _isLoading = true;
+    });
+
+    // 결제 처리 시뮬레이션
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (mounted) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => PaymentCompleteView(
+            rental: widget.rental,
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -345,32 +193,70 @@ class _PaymentViewState extends State<PaymentView> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    '총 결제 금액: ${widget.rental.totalPrice}원',
-                    style: AppTheme.titleMedium.copyWith(
-                      color: AppColors.primary,
-                    ),
-                    textAlign: TextAlign.right,
-                  ),
-                  const SizedBox(height: 8),
-                  GestureDetector(
-                    onTap: _handlePaymentButtonTap,
-                    child: Opacity(
-                      opacity: agreedToTerms ? 1.0 : 0.5,
-                      child: Image.asset(
-                        'assets/images/btn_send_regular.png',
-                        width: double.infinity,
-                        height: 44,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, -2),
                   ),
                 ],
+              ),
+              child: SafeArea(
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _handlePaymentButtonTap,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        agreedToTerms ? AppColors.primary : Colors.grey[300],
+                    foregroundColor:
+                        agreedToTerms ? Colors.black : Colors.grey[600],
+                    minimumSize: const Size.fromHeight(52),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: _isLoading
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.black),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              '결제 진행 중...',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: agreedToTerms
+                                    ? Colors.black
+                                    : Colors.grey[600],
+                              ),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          '결제하기',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color:
+                                agreedToTerms ? Colors.black : Colors.grey[600],
+                          ),
+                        ),
+                ),
               ),
             ),
           ],

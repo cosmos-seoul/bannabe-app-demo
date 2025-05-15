@@ -30,7 +30,7 @@ class PaymentCompleteView extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               const Text(
-                '결제가 완료되었습니다',
+                '대여가 완료되었습니다',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
