@@ -2,16 +2,55 @@ import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_theme.dart';
 import '../../../data/models/rental.dart';
+import '../../../data/repositories/rental_repository.dart';
 import '../../../app/routes.dart';
 import '../../../features/rental/views/active_rentals_view.dart';
 
-class PaymentCompleteView extends StatelessWidget {
+class PaymentCompleteView extends StatefulWidget {
   final Rental rental;
 
   const PaymentCompleteView({
     super.key,
     required this.rental,
   });
+
+  @override
+  State<PaymentCompleteView> createState() => _PaymentCompleteViewState();
+}
+
+class _PaymentCompleteViewState extends State<PaymentCompleteView> {
+  final _rentalRepository = RentalRepository.instance;
+  bool _isSaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _saveRental();
+  }
+
+  Future<void> _saveRental() async {
+    if (_isSaving) return;
+
+    setState(() {
+      _isSaving = true;
+    });
+
+    try {
+      await _rentalRepository.create(widget.rental);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('대여 정보 저장 실패: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSaving = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +95,7 @@ class PaymentCompleteView extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${rental.totalPrice}원',
+                          '${widget.rental.totalPrice}원',
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -72,7 +111,7 @@ class PaymentCompleteView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('대여 상품'),
-                        Text(rental.accessoryName),
+                        Text(widget.rental.accessoryName),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -80,7 +119,7 @@ class PaymentCompleteView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('대여 시간'),
-                        Text('${rental.totalRentalTime.inHours}시간'),
+                        Text('${widget.rental.totalRentalTime.inHours}시간'),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -88,7 +127,7 @@ class PaymentCompleteView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('대여 장소'),
-                        Text(rental.stationName),
+                        Text(widget.rental.stationName),
                       ],
                     ),
                   ],
@@ -127,7 +166,7 @@ class PaymentCompleteView extends StatelessWidget {
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => ActiveRentalsView(
-                              newRental: rental,
+                              newRental: widget.rental,
                             ),
                           ),
                         );
