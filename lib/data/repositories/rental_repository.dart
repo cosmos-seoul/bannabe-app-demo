@@ -67,4 +67,9 @@ class RentalRepository implements BaseRepository<Rental> {
     await Future.delayed(const Duration(seconds: 1));
     return [];
   }
+
+  Future<void> returnRental(String id) async {
+    await Future.delayed(const Duration(seconds: 1));
+    // TODO: 실제 API 연동
+  }
 }
