@@ -6,12 +6,12 @@ class UserRepository implements BaseRepository<User> {
   Future<User> get(String id) async {
     await Future.delayed(const Duration(seconds: 1));
     return User(
-      id: id,
-      email: '',
-      name: '',
-      phoneNumber: '',
-      profileImageUrl: '',
-      createdAt: DateTime.now(),
+      id: 'test-user-id',
+      email: 'kimbillit@gmail.com',
+      name: '김빌릿',
+      phoneNumber: '010-1234-5678',
+      profileImageUrl: 'assets/images/profile',
+      createdAt: DateTime.now().subtract(const Duration(days: 30)),
       updatedAt: DateTime.now(),
       rentals: [],
     );
