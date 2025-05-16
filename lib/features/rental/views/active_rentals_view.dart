@@ -38,12 +38,7 @@ class _ActiveRentalsViewState extends State<ActiveRentalsView> {
       final rentals = await _rentalRepository.getActiveRentals();
 
       setState(() {
-        // 새로운 결제 기록이 있다면 리스트 최상단에 추가
-        if (widget.newRental != null) {
-          _rentals = [widget.newRental!, ...rentals];
-        } else {
-          _rentals = rentals;
-        }
+        _rentals = rentals;
         _isLoading = false;
       });
     } catch (e) {
