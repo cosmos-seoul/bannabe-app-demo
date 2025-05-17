@@ -1,11 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../viewmodels/home_viewmodel.dart';
+
+import '../../../app/routes.dart';
 import '../../../core/widgets/bottom_navigation_bar.dart';
 import '../../../core/widgets/loading_animation.dart';
-import '../../../app/routes.dart';
 import '../../../core/widgets/map_view.dart';
-import 'dart:async';
+import '../viewmodels/home_viewmodel.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -61,7 +63,7 @@ class _HomeViewState extends State<HomeView> {
           Expanded(
             child: Scaffold(
               appBar: AppBar(
-                title: const Text('Billit'),
+                title: const Text('BILLIT'),
                 centerTitle: true,
                 automaticallyImplyLeading: false,
               ),
