@@ -1,12 +1,12 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import '../../../data/models/station.dart';
-import '../../../data/models/accessory.dart';
-import '../../../data/repositories/station_repository.dart';
+import 'package:geolocator/geolocator.dart';
+
 import '../../../core/services/location_service.dart';
 import '../../../core/services/storage_service.dart';
+import '../../../data/models/accessory.dart';
+import '../../../data/models/station.dart';
+import '../../../data/repositories/station_repository.dart';
 
 class MapViewModel with ChangeNotifier {
   final StationRepository _stationRepository;
@@ -35,11 +35,17 @@ class MapViewModel with ChangeNotifier {
         _storageService = storageService ?? StorageService.instance;
 
   List<NMarker> get naverMarkers => _markers;
+
   Position? get currentLocation => _currentPosition;
+
   Station? get selectedStation => _selectedStation;
+
   bool get isLoading => _isLoading;
+
   String? get error => _error;
+
   List<Station> get favoriteStations => _favoriteStations;
+
   List<Station> get recentStations => _recentStations;
 
   Future<void> onMapCreated(NaverMapController controller) async {
@@ -79,7 +85,7 @@ class MapViewModel with ChangeNotifier {
     if (_mapController == null) return;
 
     final markerIcon = await NOverlayImage.fromAssetImage(
-      'assets/images/honey.png',
+      'assets/images/map_marker.png',
     );
 
     await _mapController!.clearOverlays();

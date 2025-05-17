@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'firebase_options.dart';
+
 import 'app/routes.dart';
 import 'core/constants/app_colors.dart';
 import 'core/services/auth_service.dart';
-import 'data/models/rental.dart';
 import 'data/models/accessory.dart';
+import 'data/models/rental.dart';
 import 'features/home/views/home_view.dart';
 import 'features/map/views/map_view.dart';
 import 'features/mypage/views/edit_profile_view.dart';
@@ -14,16 +13,13 @@ import 'features/mypage/views/mypage_view.dart';
 import 'features/notice/views/notice_list_view.dart';
 import 'features/payment/views/payment_complete_view.dart';
 import 'features/payment/views/payment_view.dart';
-import 'features/rental/views/rental_view.dart';
 import 'features/rental/views/rental_detail_view.dart';
-import 'features/rental/views/rental_status_view.dart';
 import 'features/rental/views/rental_history_view.dart';
+import 'features/rental/views/rental_status_view.dart';
+import 'features/rental/views/rental_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   await NaverMapSdk.instance.initialize(
     clientId: 'gaumfmevf3',
     onAuthFailed: (error) {

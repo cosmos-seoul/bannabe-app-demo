@@ -1,11 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class HoneyLoadingAnimation extends StatefulWidget {
   final bool isStationSelected;
+  final Color dotColor; // 점 색상을 선택할 수 있도록 추가
 
   const HoneyLoadingAnimation({
     super.key,
     this.isStationSelected = false,
+    this.dotColor = Colors.black, // 기본값은 검은색
   });
 
   @override
@@ -14,14 +16,14 @@ class HoneyLoadingAnimation extends StatefulWidget {
 
 class _HoneyLoadingAnimationState extends State<HoneyLoadingAnimation>
     with TickerProviderStateMixin {
-  late final List<AnimationController> _honeyControllers;
+  late final List<AnimationController> _dotControllers;
 
   @override
   void initState() {
     super.initState();
 
-    // 꿀벌 깜빡임 애니메이션 컨트롤러
-    _honeyControllers = List.generate(
+    // 점 깜빡임 애니메이션 컨트롤러
+    _dotControllers = List.generate(
       3,
       (index) => AnimationController(
         duration: const Duration(milliseconds: 600), // 깜빡이는 시간
@@ -35,9 +37,9 @@ class _HoneyLoadingAnimationState extends State<HoneyLoadingAnimation>
 
   void _startSequentialAnimations() async {
     while (mounted) {
-      for (int i = 0; i < _honeyControllers.length; i++) {
-        _honeyControllers[i].forward(from: 0).then((_) {
-          _honeyControllers[i].reverse();
+      for (int i = 0; i < _dotControllers.length; i++) {
+        _dotControllers[i].forward(from: 0).then((_) {
+          _dotControllers[i].reverse();
         });
         await Future.delayed(const Duration(milliseconds: 700));
       }
@@ -46,7 +48,7 @@ class _HoneyLoadingAnimationState extends State<HoneyLoadingAnimation>
 
   @override
   void dispose() {
-    for (var controller in _honeyControllers) {
+    for (var controller in _dotControllers) {
       controller.dispose();
     }
     super.dispose();
@@ -55,41 +57,46 @@ class _HoneyLoadingAnimationState extends State<HoneyLoadingAnimation>
   @override
   Widget build(BuildContext context) {
     if (widget.isStationSelected) {
-      // 스테이션 선택된 경우 로직 유지
+      // 스테이션 선택된 경우
       return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            'assets/images/bannabee.png', // 꿀벌 이미지
-            width: 40,
-            height: 40,
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              color: widget.dotColor,
+              shape: BoxShape.circle,
+            ),
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 8),
           const Text('🍯'),
         ],
       );
     }
 
-    // 순차적으로 깜빡이는 3마리 꿀벌
+    // 순차적으로 깜빡이는 3개의 점
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
         3,
-        (index) => AnimatedBuilder(
-          animation: _honeyControllers[index],
-          builder: (context, child) {
-            return Opacity(
-              opacity: _honeyControllers[index].value,
-              child: child,
-            );
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Image.asset(
-              'assets/images/bannabee.png', // 꿀벌 이미지
-              width: 40, // 크기 조정 가능
-              height: 40, // 크기 조정 가능
-            ),
+        (index) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: AnimatedBuilder(
+            animation: _dotControllers[index],
+            builder: (context, child) {
+              return Opacity(
+                opacity: _dotControllers[index].value,
+                child: Container(
+                  width: 12,
+                  height: 12,
+                  decoration: BoxDecoration(
+                    color: widget.dotColor,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

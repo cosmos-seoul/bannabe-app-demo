@@ -13,35 +13,36 @@ class AccessoryRepository {
         pricePerHour: 2000,
         category: AccessoryCategory.charger,
         isAvailable: true,
-        imageUrl: 'assets/images/items/charger-1.png', // canva
+        imageUrl: 'assets/images/items/charger-1.jpg', // canva
       ),
       Accessory(
         id: 'charger-2',
-        name: '노트북 PD 충전기',
-        description: '65W PD 충전기',
+        name: '3 Port PD 충전기',
+        description: '110W 퀵차지 충전기',
         pricePerHour: 1500,
         category: AccessoryCategory.charger,
         isAvailable: true,
-        imageUrl: 'assets/images/items/charger-2.png', // canva
+        imageUrl: 'assets/images/items/charger-2.jpeg', // canva
       ),
       Accessory(
         id: 'charger-3',
-        name: 'C타입 충전기',
-        description: '25W 고속 충전기',
+        name: '2 Port 충전기',
+        description: '65W 듀얼 퀵차지 충전기',
         pricePerHour: 1000,
         category: AccessoryCategory.charger,
         isAvailable: true,
         imageUrl:
-            'assets/images/items/charger-3.png', // [Freepik] charger-usb-cable-type-c-white-isolated-background
+            'assets/images/items/charger-3.jpeg', // [Freepik] charger-usb-cable-type-c-white-isolated-background
       ),
       Accessory(
         id: 'charger-4',
-        name: '8핀 충전기',
-        description: '20W 고속 충전기',
+        name: '5 Port PD 퀵차지 멀티 충전기',
+        description: '228W 멀티 PD 퀵차지 충전기',
         pricePerHour: 1000,
         category: AccessoryCategory.charger,
         isAvailable: false,
-        imageUrl: 'assets/images/items/charger-4.png', // GettyImages-1479104893
+        imageUrl:
+            'assets/images/items/charger-4.jpeg', // GettyImages-1479104893
       ),
 
       // 케이블
@@ -52,7 +53,7 @@ class AccessoryRepository {
         pricePerHour: 1000,
         category: AccessoryCategory.cable,
         isAvailable: true,
-        imageUrl: 'assets/images/items/cable-1.png', // GettyImages-478051415
+        imageUrl: 'assets/images/items/cable-1.jpeg', // GettyImages-478051415
       ),
       Accessory(
         id: 'cable-2',
@@ -61,7 +62,7 @@ class AccessoryRepository {
         pricePerHour: 1000,
         category: AccessoryCategory.cable,
         isAvailable: true,
-        imageUrl: 'assets/images/items/cable-2.png', // canva
+        imageUrl: 'assets/images/items/cable-2.jpg', // canva
       ),
       Accessory(
         id: 'cable-3',
@@ -70,7 +71,7 @@ class AccessoryRepository {
         pricePerHour: 500,
         category: AccessoryCategory.cable,
         isAvailable: true,
-        imageUrl: 'assets/images/items/cable-3.png', // canva
+        imageUrl: 'assets/images/items/cable-3.jpeg', // canva
       ),
       Accessory(
         id: 'cable-4',
@@ -80,7 +81,7 @@ class AccessoryRepository {
         category: AccessoryCategory.cable,
         isAvailable: false,
         imageUrl:
-            'assets/images/items/cable-4.png', // [Freepik] usb-cable-type-c-white-isolated-background
+            'assets/images/items/cable-4.jpg', // [Freepik] usb-cable-type-c-white-isolated-background
       ),
 
       // 독
@@ -118,12 +119,12 @@ class AccessoryRepository {
       Accessory(
         id: 'powerbank-1',
         name: '노트북용 보조배터리',
-        description: '30000mAh, 100W PD',
+        description: '20000mAh, 100W PD',
         pricePerHour: 3000,
         category: AccessoryCategory.powerBank,
         isAvailable: true,
         imageUrl:
-            'assets/images/items/powerbank-1.png', // [Freepik] png-power-bank-isolated-white-background
+            'assets/images/items/powerbank-1.jpeg', // [Freepik] png-power-bank-isolated-white-background
       ),
       Accessory(
         id: 'powerbank-2',
@@ -133,7 +134,7 @@ class AccessoryRepository {
         category: AccessoryCategory.powerBank,
         isAvailable: false,
         imageUrl:
-            'assets/images/items/powerbank-2.png', // [Freepik] png-power-bank-isolated-white-background
+            'assets/images/items/powerbank-2.jpeg', // [Freepik] png-power-bank-isolated-white-background
       ),
 
       // 기타
