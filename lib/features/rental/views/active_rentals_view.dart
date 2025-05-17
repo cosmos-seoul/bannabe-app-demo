@@ -38,12 +38,7 @@ class _ActiveRentalsViewState extends State<ActiveRentalsView> {
       final rentals = await _rentalRepository.getActiveRentals();
 
       setState(() {
-        // 새로운 결제 기록이 있다면 리스트 최상단에 추가
-        if (widget.newRental != null) {
-          _rentals = [widget.newRental!, ...rentals];
-        } else {
-          _rentals = rentals;
-        }
+        _rentals = rentals;
         _isLoading = false;
       });
     } catch (e) {
@@ -56,6 +51,49 @@ class _ActiveRentalsViewState extends State<ActiveRentalsView> {
         );
       }
     }
+  }
+
+  Future<void> _returnRental(Rental rental) async {
+    try {
+      await _rentalRepository.returnRental(rental.id);
+      setState(() {
+        _rentals.removeWhere((r) => r.id == rental.id);
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('물품이 성공적으로 반납되었습니다.')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('반납 처리 중 오류가 발생했습니다: $e')),
+        );
+      }
+    }
+  }
+
+  void _showReturnDialog(Rental rental) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('반납 확인'),
+        content: const Text('정말로 반납하시겠습니까?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('취소'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              _returnRental(rental);
+            },
+            child: const Text('확인'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -149,7 +187,7 @@ class _ActiveRentalsViewState extends State<ActiveRentalsView> {
                         color: AppColors.primary.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
@@ -157,7 +195,7 @@ class _ActiveRentalsViewState extends State<ActiveRentalsView> {
                             size: 16,
                             color: AppColors.primary,
                           ),
-                          const SizedBox(width: 4),
+                          SizedBox(width: 4),
                           Text(
                             '대여 중',
                             style: TextStyle(
@@ -264,23 +302,33 @@ class _ActiveRentalsViewState extends State<ActiveRentalsView> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('준비 중인 기능입니다.')),
-                      );
+                      _showReturnDialog(rental);
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary.withOpacity(0.1),
-                      foregroundColor: AppColors.primary,
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 12,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                          AppColors.primary.withOpacity(0.1)),
+                      foregroundColor:
+                          MaterialStateProperty.all(AppColors.primary),
+                      elevation: MaterialStateProperty.all(0),
+                      overlayColor: MaterialStateProperty.resolveWith<Color?>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.pressed)) {
+                            return AppColors.primary.withOpacity(0.25);
+                          }
+                          return null;
+                        },
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                      shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
                     ),
                     child: const Text(
-                      '연장하기',
+                      '반납하기',
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,

@@ -206,7 +206,8 @@ class _RentalHistoryViewState extends State<RentalHistoryView> {
                     ),
                   ],
                 ),
-                if (rental.returnStationName != null) ...[
+                if (rental.returnStationName != null &&
+                    rental.status != RentalStatus.active) ...[
                   const SizedBox(height: 12),
                   Row(
                     children: [
@@ -244,24 +245,26 @@ class _RentalHistoryViewState extends State<RentalHistoryView> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.calendar_today_outlined,
-                      size: 20,
-                      color: Colors.grey[600],
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      '반납: ${rental.updatedAt.toString().substring(0, 16)}',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey[800],
+                if (rental.status != RentalStatus.active) ...[
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.calendar_today_outlined,
+                        size: 20,
+                        color: Colors.grey[600],
                       ),
-                    ),
-                  ],
-                ),
+                      const SizedBox(width: 8),
+                      Text(
+                        '반납: ${rental.updatedAt.toString().substring(0, 16)}',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[800],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
                 const SizedBox(height: 12),
                 Row(
                   children: [

@@ -5,8 +5,6 @@ import '../../../core/widgets/bottom_navigation_bar.dart';
 import '../../../core/widgets/loading_animation.dart';
 import '../../../app/routes.dart';
 import '../../../core/widgets/map_view.dart';
-import '../../../core/services/storage_service.dart';
-import '../../../data/models/rental.dart';
 import 'dart:async';
 
 class HomeView extends StatefulWidget {
@@ -63,7 +61,7 @@ class _HomeViewState extends State<HomeView> {
           Expanded(
             child: Scaffold(
               appBar: AppBar(
-                title: const Text('Bannabee'),
+                title: const Text('Billit'),
                 centerTitle: true,
                 automaticallyImplyLeading: false,
               ),
@@ -235,7 +233,7 @@ class _HomeViewState extends State<HomeView> {
       },
       {
         'title': '멤버십 할인 이벤트',
-        'description': '월 99,900원으로 무제한 대여',
+        'description': '월 14,900원으로 무제한 대여',
         'image': 'assets/images/pc_smartphone_battery_juuden.png',
         'backgroundColor': '#FF6B6B',
       },

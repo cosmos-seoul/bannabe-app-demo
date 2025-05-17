@@ -12,10 +12,8 @@ import '../../../core/services/storage_service.dart';
 
 class HomeViewModel extends ChangeNotifier {
   final StationRepository _stationRepository;
-  final RentalRepository _rentalRepository;
   final NoticeRepository _noticeRepository;
   final LocationService _locationService;
-  final AuthService _authService;
   final StorageService _storageService;
 
   List<Station> _nearbyStations = [];
@@ -36,10 +34,8 @@ class HomeViewModel extends ChangeNotifier {
     AuthService? authService,
     StorageService? storageService,
   })  : _stationRepository = stationRepository ?? StationRepository.instance,
-        _rentalRepository = rentalRepository ?? RentalRepository.instance,
         _noticeRepository = noticeRepository ?? NoticeRepository(),
         _locationService = locationService ?? LocationService.instance,
-        _authService = authService ?? AuthService.instance,
         _storageService = storageService ?? StorageService.instance {
     _init();
   }
@@ -70,8 +66,6 @@ class HomeViewModel extends ChangeNotifier {
       }
 
       await Future.wait([
-        _loadRecentRentals(),
-        _loadActiveRentals(),
         _loadNotices(),
       ]);
     } catch (e) {
@@ -99,30 +93,6 @@ class HomeViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> _loadRecentRentals() async {
-    try {
-      final userId = _authService.currentUser?.id;
-      if (userId != null) {
-        _recentRentals = await _rentalRepository.getRecentRentals();
-      }
-    } catch (e) {
-      print('Failed to load recent rentals: $e');
-      _recentRentals = [];
-    }
-  }
-
-  Future<void> _loadActiveRentals() async {
-    try {
-      final userId = _authService.currentUser?.id;
-      if (userId != null) {
-        _activeRentals = await _rentalRepository.getActiveRentals();
-      }
-    } catch (e) {
-      print('Failed to load active rentals: $e');
-      _activeRentals = [];
-    }
-  }
-
   Future<void> _loadNotices() async {
     try {
       _notices = await _noticeRepository.getAll();
@@ -141,8 +111,6 @@ class HomeViewModel extends ChangeNotifier {
 
     try {
       await Future.wait([
-        _loadRecentRentals(),
-        _loadActiveRentals(),
         _loadNearbyStations(),
         _loadNotices(),
       ]);
@@ -151,15 +119,6 @@ class HomeViewModel extends ChangeNotifier {
     } finally {
       _isLoading = false;
       notifyListeners();
-    }
-  }
-
-  Future<void> refreshRemainingTime() async {
-    try {
-      await _loadRecentRentals();
-      notifyListeners();
-    } catch (e) {
-      print('Failed to refresh remaining time: $e');
     }
   }
 

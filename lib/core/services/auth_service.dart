@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter/foundation.dart';
 import '../../data/models/user.dart';
 import '../services/storage_service.dart';
-import '../../data/repositories/auth_repository.dart';
 
 class AuthService with ChangeNotifier {
   static final AuthService _instance = AuthService._internal();
@@ -128,7 +127,7 @@ class AuthService with ChangeNotifier {
     _currentUser = User(
       id: 'test-user-id',
       email: email,
-      name: '반나비',
+      name: '김빌릿',
       phoneNumber: '010-1234-5678',
       profileImageUrl: 'assets/images/profile.jpg',
       createdAt: DateTime.now(),

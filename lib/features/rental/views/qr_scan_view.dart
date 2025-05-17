@@ -3,7 +3,6 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/qr_scan_viewmodel.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../app/routes.dart';
 import '../../../core/widgets/loading_animation.dart';
 import '../../../data/models/rental.dart';
 import './rental_duration_view.dart';
@@ -84,7 +83,7 @@ class _QRScanViewState extends State<QRScanView> {
                       accessoryId: 'powerbank-1',
                       stationId: 'S1',
                       accessoryName: '노트북용 보조배터리',
-                      stationName: '강남역점',
+                      stationName: '건국대학교 제1학생회관',
                       totalPrice: 1000,
                       status: RentalStatus.active,
                       createdAt: DateTime.now(),

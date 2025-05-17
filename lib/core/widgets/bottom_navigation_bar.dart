@@ -37,7 +37,7 @@ class AppBottomNavigationBar extends StatelessWidget {
             break;
           case 3:
             // 테스트용 계정으로 마이페이지 접근
-            AuthService.instance.setTestUser('bannabee@naver.com');
+            AuthService.instance.setTestUser('kimbillit@gmail.com');
             Navigator.of(context).pushReplacementNamed(Routes.mypage);
             break;
         }
