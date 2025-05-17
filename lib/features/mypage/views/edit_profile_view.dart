@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_theme.dart';
 import '../../../core/services/auth_service.dart';
@@ -46,10 +47,10 @@ class _EditProfileViewState extends State<EditProfileView> {
     });
 
     try {
-      await AuthService.instance.updateProfile(
-        name: name,
-        phoneNumber: AuthService.instance.currentUser?.phoneNumber ?? '',
-      );
+      // await AuthService.instance.updateProfile(
+      //   name: name,
+      //   phoneNumber: AuthService.instance.currentUser?.phoneNumber ?? '',
+      // );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('프로필이 수정되었습니다.')),
