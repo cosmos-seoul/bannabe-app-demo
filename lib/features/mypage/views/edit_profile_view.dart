@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_theme.dart';
 import '../../../core/services/auth_service.dart';
+import '../../../core/widgets/loading_animation.dart';
 
 class EditProfileView extends StatefulWidget {
   const EditProfileView({super.key});
@@ -132,9 +133,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                     ? const SizedBox(
                         height: 20,
                         width: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        ),
+                        child: HoneyLoadingAnimation(dotColor: AppColors.primary),
                       )
                     : const Text('저장'),
               ),
