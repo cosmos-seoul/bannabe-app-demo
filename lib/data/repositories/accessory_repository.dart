@@ -147,6 +147,26 @@ class AccessoryRepository {
         isAvailable: false,
         imageUrl: 'assets/images/items/etc-1.png', // canva
       ),
+
+      Accessory(
+        id: 'etc-2',
+        name: '펜타그래프 키보드',
+        description: 'Logitech MX Keys mini',
+        pricePerHour: 1000,
+        category: AccessoryCategory.etc,
+        isAvailable: true,
+        imageUrl: 'assets/images/items/keyboard.webp',
+      ),
+
+      Accessory(
+        id: 'etc-3',
+        name: '무소음 블루투스 마우스',
+        description: 'Logitech MX Anywhere 3S',
+        pricePerHour: 1000,
+        category: AccessoryCategory.etc,
+        isAvailable: true,
+        imageUrl: 'assets/images/items/mouse.webp',
+      ),
     ];
   }
 
