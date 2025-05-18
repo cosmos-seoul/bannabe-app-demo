@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:geolocator/geolocator.dart';
-import '../../data/models/station.dart';
+
 import '../../app/routes.dart';
+import '../../data/models/station.dart';
 
 class MapView extends StatefulWidget {
   final Position? initialPosition;
@@ -83,7 +84,7 @@ class _MapViewState extends State<MapView> {
     if (widget.stations == null) return;
 
     final markerIcon = await NOverlayImage.fromAssetImage(
-      'assets/images/honey.png',
+      'assets/images/map_marker.png',
     );
 
     for (final station in widget.stations!) {

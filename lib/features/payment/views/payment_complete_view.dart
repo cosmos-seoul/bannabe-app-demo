@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
+import '../../../app/routes.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_theme.dart';
 import '../../../data/models/rental.dart';
 import '../../../data/repositories/rental_repository.dart';
-import '../../../app/routes.dart';
 import '../../../features/rental/views/active_rentals_view.dart';
 
 class PaymentCompleteView extends StatefulWidget {
@@ -63,7 +64,7 @@ class _PaymentCompleteViewState extends State<PaymentCompleteView> {
             children: [
               const Spacer(),
               Image.asset(
-                'assets/images/bannabee.png',
+                'assets/images/billit_logo.png',
                 width: 120,
                 height: 120,
               ),

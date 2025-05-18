@@ -1,12 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../viewmodels/rental_viewmodel.dart';
-import '../../../data/models/accessory.dart';
-import '../../../core/widgets/bottom_navigation_bar.dart';
+
 import '../../../app/routes.dart';
-import './rental_detail_view.dart';
+import '../../../core/widgets/bottom_navigation_bar.dart';
 import '../../../core/widgets/loading_animation.dart';
-import 'dart:math';
+import '../../../data/models/accessory.dart';
+import '../viewmodels/rental_viewmodel.dart';
+import './rental_detail_view.dart';
 
 class RentalView extends StatelessWidget {
   const RentalView({super.key});
@@ -210,12 +212,12 @@ class _RentalContent extends StatelessWidget {
                                                 child: Image.asset(
                                                   accessory.imageUrl.isNotEmpty
                                                       ? accessory.imageUrl
-                                                      : 'assets/images/bannabe.png',
+                                                      : 'assets/images/billit_logo.png',
                                                   fit: BoxFit.contain,
                                                   errorBuilder: (context, error,
                                                       stackTrace) {
                                                     return Image.asset(
-                                                      'assets/images/bannabe.png',
+                                                      'assets/images/billit_logo.png',
                                                       fit: BoxFit.contain,
                                                     );
                                                   },

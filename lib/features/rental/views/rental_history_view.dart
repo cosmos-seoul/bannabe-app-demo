@@ -4,6 +4,7 @@ import '../../../data/repositories/rental_repository.dart';
 import '../../../core/constants/app_theme.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/widgets/bottom_navigation_bar.dart';
+import '../../../core/widgets/loading_animation.dart';
 import '../../../app/routes.dart';
 
 class RentalHistoryView extends StatefulWidget {
@@ -62,7 +63,7 @@ class _RentalHistoryViewState extends State<RentalHistoryView> {
         ),
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: HoneyLoadingAnimation())
           : RefreshIndicator(
               onRefresh: _loadRentals,
               child: _rentals.isEmpty
